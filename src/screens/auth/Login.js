@@ -1,26 +1,57 @@
-import { View, Text, SafeAreaView, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-import InputField from '../../components/InputField';
-
-const Login = () => {
+const Login = ({navigation}) => {
   return (
-    <SafeAreaView style={{
-        flex: 1,
-        justifyContent: 'top',
+    <SafeAreaView>
+      <View 
+      style={{
         alignItems: 'center'
-    }}>
-        <Text style={{fontSize: 30, fontWeight: 'bold', marginTop: 50}}>Welcome Back</Text>
-        <Text style={{fontSize: 15, fontWeight: 'thin' , margin: 20, color: 'gray'}}>Log in to your Blankhouse account</Text>
+      }}>
+      <Text style={{fontSize: 30, fontWeight: 'bold', marginTop: 50}}>Welcome Back</Text>
+      <Text style={{fontSize: 15, fontWeight: 'thin' , margin: 20, color: 'gray'}}>Log in to your Blankhouse account</Text>
+      </View>
+      <View>
         <TextInput 
-        style={{
-            height: 40,
-            margin: 12,
-            borderWidth: 1,
-            padding: 10,
-            width: 'full'}}/>
+        style={{margin: 20,
+          width: 'full',
+          height: 40,
+          borderColor: 'gray',
+          borderWidth: 1,
+          borderRadius: 5,
+         }} 
+        placeholder='Username'/>
+        <TextInput 
+        style={{margin: 20,
+          width: 'full',
+          height: 40,
+          borderColor: 'gray',
+          borderWidth: 1,
+          borderRadius: 5,
+         }} 
+        placeholder='Password'/>
+      </View>
+      <TouchableOpacity 
+              style={styles.toc}
+              onPress={() => navigation.navigate('LandingPage')}>
+                  <Text style={styles.text}>Login</Text>
+              </TouchableOpacity>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+    toc: {
+        backgroundColor: 'gray',
+        margin: 40,
+        borderRadius: 20,
+        alignContent: 'center'
+    },
+    text: {
+        fontSize: 20, 
+        padding: 15,
+        alignSelf: 'center'
+    },
+});
 
 export default Login
