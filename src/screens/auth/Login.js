@@ -1,7 +1,11 @@
 import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext';
 
 const Login = ({navigation}) => {
+  
+  const { login } = useContext(AuthContext);
+
   return (
     <SafeAreaView>
       <View 
@@ -33,7 +37,7 @@ const Login = ({navigation}) => {
       </View>
       <TouchableOpacity 
               style={styles.toc}
-              onPress={() => navigation.navigate('LandingPage')}>
+              onPress={() => {login()}}>
                   <Text style={styles.text}>Login</Text>
               </TouchableOpacity>
     </SafeAreaView>

@@ -1,10 +1,14 @@
 import React from 'react';
 
-import AppStack  from './src/navigation/AppStack';
+import AppNav from './src/navigation/AppNav'
+import { AuthProvider } from './src/context/AuthContext'
 
-const App = () => {
+function App() {
+  
   return (
-  <AppStack/>
+    <AuthProvider>
+      <AppNav/>
+    </AuthProvider>
   );
 }
 

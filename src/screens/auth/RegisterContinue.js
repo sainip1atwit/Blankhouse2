@@ -56,8 +56,8 @@ const RegisterContinue = ({navigation}) => {
       </View>
       <TouchableOpacity 
               style={styles.toc}
-              onPress={() => navigation.navigate('LandingPage')}>
-                  <Text style={styles.text}>Go to the App</Text>
+              onPress={() => navigation.navigate('Opening')}>
+                  <Text style={styles.text}>Go Back and Login</Text>
               </TouchableOpacity>
     </SafeAreaView>
   );

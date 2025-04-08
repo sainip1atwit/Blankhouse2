@@ -9,11 +9,6 @@ const Opening = ({navigation}) => {
       
       <View style={styles.view}>
       <TouchableOpacity 
-      onPress={() => navigation.navigate('LandingPage')}
-      style={styles.toc}>
-        <Text style={styles.text}>Landing Page</Text>
-      </TouchableOpacity>
-      <TouchableOpacity 
       style={styles.toc}
       onPress={() => navigation.navigate('Register')}>
         <Text style={styles.text}>Create an Account</Text>
