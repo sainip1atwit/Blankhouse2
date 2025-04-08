@@ -1,61 +1,159 @@
-import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
+import { Ionicons } from '@expo/vector-icons';
 
-const Login = ({navigation}) => {
-  
-  const { login } = useContext(AuthContext);
+const Login = ({ navigation }) => {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const { handleLogin } = useContext(AuthContext);
 
   return (
-    <SafeAreaView>
-      <View 
-      style={{
-        alignItems: 'center'
-      }}>
-      <Text style={{fontSize: 30, fontWeight: 'bold', marginTop: 50}}>Welcome Back</Text>
-      <Text style={{fontSize: 15, fontWeight: 'thin' , margin: 20, color: 'gray'}}>Log in to your Blankhouse account</Text>
-      </View>
-      <View>
-        <TextInput 
-        style={{margin: 20,
-          width: 'full',
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          borderRadius: 5,
-         }} 
-        placeholder='Username'/>
-        <TextInput 
-        style={{margin: 20,
-          width: 'full',
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          borderRadius: 5,
-         }} 
-        placeholder='Password'/>
-      </View>
-      <TouchableOpacity 
-              style={styles.toc}
-              onPress={() => {login()}}>
-                  <Text style={styles.text}>Login</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={styles.inner}
+        >
+          <View style={styles.header}>
+            <Text style={styles.title}>Welcome Back</Text>
+            <Text style={styles.subtitle}>
+              Log in to your Blankhouse account
+            </Text>
+          </View>
+
+          <View style={styles.form}>
+            <Text style={styles.label}>Username</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                value={username}
+                onChangeText={setUsername}
+                placeholder=""
+                autoCapitalize="none"
+                keyboardType="default"
+                returnKeyType="next"
+              />
+            </View>
+
+            <Text style={styles.label}>Password</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={[styles.input, { flex: 1 }]}
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+                placeholder=""
+                autoCapitalize="none"
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeIcon}
+              >
+                <Ionicons
+                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                  size={20}
+                  color="#666"
+                />
               </TouchableOpacity>
-    </SafeAreaView>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleLogin(username, password)}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
-    toc: {
-        backgroundColor: 'gray',
-        margin: 40,
-        borderRadius: 20,
-        alignContent: 'center'
-    },
-    text: {
-        fontSize: 20, 
-        padding: 15,
-        alignSelf: 'center'
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fffef9',
+  },
+  inner: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 40,
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 22,
+    fontFamily: 'Bodoni 72',
+    fontStyle: 'italic',
+    color: '#1a1a1a',
+  },
+  subtitle: {
+    fontSize: 13,
+    color: '#666',
+    marginTop: 6,
+  },
+  form: {
+    width: '85%',
+    maxWidth: 320,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: '500',
+    marginBottom: 4,
+    color: '#1a1a1a',
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 6,
+    backgroundColor: '#fff',
+    paddingHorizontal: 12,
+    marginBottom: 20,
+  },
+  input: {
+    fontSize: 14,
+    paddingVertical: 10,
+    color: '#000',
+    flex: 1,
+  },
+  eyeIcon: {
+    paddingLeft: 10,
+  },
+  button: {
+    backgroundColor: '#808080',
+    paddingVertical: 14,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginBottom: 30,
+    marginHorizontal: 30,
+    width: '85%',
+    maxWidth: 320,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '500',
+  },
 });
 
-export default Login
+export default Login;

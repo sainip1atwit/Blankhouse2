@@ -1,5 +1,6 @@
+import { View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useContext, View } from 'react';
+import React, { useContext } from 'react';
 
 import AppStack  from './AppStack';
 import AuthStack from './AuthStack';
@@ -10,13 +11,16 @@ function AppNav() {
   const { isLoading, userToken } = useContext(AuthContext);
 
   if (isLoading) {
-    
-    <View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}>
-        <ActivityIndicator size={'large'}/>
-    </View>
+    return (
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+            <ActivityIndicator size={'large'}/>
+        </View>
+    );
   }
 
   return (
+    // check if userToken is valid
+    //if not valid, reauthenticate 
     <NavigationContainer>
         {userToken !== null ? <AppStack/> : <AuthStack/>}
     </NavigationContainer>
