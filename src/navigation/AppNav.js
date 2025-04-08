@@ -19,6 +19,8 @@ function AppNav() {
   }
 
   return (
+    // check if userToken is valid
+    //if not valid, reauthenticate 
     <NavigationContainer>
         {userToken !== null ? <AppStack/> : <AuthStack/>}
     </NavigationContainer>

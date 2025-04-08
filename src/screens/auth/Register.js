@@ -19,7 +19,7 @@ const Register = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { handleRegister } = useContext(AuthContext);
+  const { handleRegister, setNewUsername, setNewPassword, setNewName } = useContext(AuthContext);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -89,7 +89,9 @@ const Register = ({ navigation }) => {
             style={styles.button}
             onPress={() => {if (name && username && password) {
               navigation.navigate('RegisterContinue');
-              handleRegister(name, username, password);
+              setNewName(name);
+              setNewUsername(username);
+              setNewPassword(password);
             }}}
           >
             <Text style={styles.buttonText}>Continue</Text>

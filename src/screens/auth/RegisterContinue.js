@@ -11,13 +11,17 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
+
 
 const RegisterContinue = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [bio, setBio] = useState('');
   const [instagram, setInstagram] = useState('');
+
+  const { handleRegister, newUsername, newPassword, newName } = useContext(AuthContext);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -86,7 +90,10 @@ const RegisterContinue = ({ navigation }) => {
 
             <TouchableOpacity
               style={styles.completeButton}
-              onPress={() => navigation.navigate('Opening')}
+              onPress={() => {
+                handleRegister(newName, newUsername, newPassword);
+                navigation.navigate('Opening')
+              }}
             >
               <Text style={styles.completeText}>Complete</Text>
             </TouchableOpacity>
