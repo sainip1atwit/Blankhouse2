@@ -1,51 +1,66 @@
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native'
-import { StatusBar } from 'expo-status-bar';
-import React from 'react'
+import { View, Text, SafeAreaView, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
 
-const Opening = ({navigation}) => {
+const Login = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Blankhouse</Text>
-      
-      <View style={styles.view}>
-      <TouchableOpacity 
-      style={styles.toc}
-      onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.text}>Create an Account</Text>
-      </TouchableOpacity>
-      <TouchableOpacity 
-      style={styles.toc}
-      onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.text}>Login</Text>
-      </TouchableOpacity>
+      <View style={styles.logoContainer}>
+        <Text style={styles.logo}> Blankhouse </Text>
       </View>
 
-      <StatusBar style="auto" />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.createAccount}>Create an account</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.loginButton}
+          onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.loginText}>Log in</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fffef9', // off-white background
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
   },
-  text: {
-    fontSize: 20, 
-    padding: 15,
-    alignSelf: 'center'
+  logoContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
-  view: {
-    alignContent: 'center',
+  logo: {
+    fontSize: 35,
+    fontFamily: 'Bodoni 72', // or use a custom cursive font
+    fontStyle: 'italic',
+    color: '#111',
   },
-  toc : {
-    backgroundColor: 'gray',
-    marginTop: 10,
+  buttonContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  createAccount: {
+    fontSize: 14,
+    color: '#444',
+    marginBottom: 11,
+  },
+  loginButton: {
+    backgroundColor: '#6c6c75', // muted gray
+    paddingVertical: 12,
+    paddingHorizontal: 50,
     borderRadius: 20,
-    alignContent: 'center'
-  }
+  },
+  loginText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
+  },
 });
 
-export default Opening
+export default Login;

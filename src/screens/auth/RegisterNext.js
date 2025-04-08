@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,15 +11,12 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { AuthContext } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 
-const Register = ({ navigation }) => {
-  const [name, setName] = useState('');
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { handleRegister } = useContext(AuthContext);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -29,26 +26,13 @@ const Register = ({ navigation }) => {
           style={styles.inner}
         >
           <View style={styles.header}>
-            <Text style={styles.title}>Welcome to Blankhouse</Text>
+            <Text style={styles.title}>Welcome Back</Text>
             <Text style={styles.subtitle}>
-              Create your account
+              Log in to your Blankhouse account
             </Text>
           </View>
-          
-          <View style={styles.form}>
-          <Text style={styles.label}>Name</Text>
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-                placeholder=""
-                autoCapitalize="none"
-                keyboardType="default"
-                returnKeyType="next"
-              />
-            </View>
 
+          <View style={styles.form}>
             <Text style={styles.label}>Username</Text>
             <View style={styles.inputWrapper}>
               <TextInput
@@ -87,10 +71,7 @@ const Register = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {if (name && username && password) {
-              navigation.navigate('RegisterContinue');
-              handleRegister(name, username, password);
-            }}}
+            onPress={() => navigation.navigate('RegisterContinue')}
           >
             <Text style={styles.buttonText}>Continue</Text>
           </TouchableOpacity>
@@ -173,4 +154,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default Login;
