@@ -41,3 +41,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    npx expo
    npx expo start -c
+
+### Software Design Document
+
+https://www.overleaf.com/project/6799412b6d621c0623d01393
