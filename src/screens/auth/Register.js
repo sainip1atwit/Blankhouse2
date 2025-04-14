@@ -10,6 +10,7 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,7 +20,7 @@ const Register = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { handleRegister, setNewUsername, setNewPassword, setNewName } = useContext(AuthContext);
+  const { checkUsername, setNewUsername, setNewPassword, setNewName } = useContext(AuthContext);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -49,7 +50,7 @@ const Register = ({ navigation }) => {
               />
             </View>
 
-            <Text style={styles.label}>Username</Text>
+            <Text id='usernameInput' style={styles.label}>Username</Text>
             <View style={styles.inputWrapper}>
               <TextInput
                 style={styles.input}
@@ -87,11 +88,16 @@ const Register = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {if (name && username && password) {
-              navigation.navigate('RegisterContinue');
+            onPress={async () => {if (name && username && password) {
               setNewName(name);
               setNewUsername(username);
               setNewPassword(password);
+              const validUsername = await checkUsername(username);
+              if (validUsername) {
+                navigation.navigate('RegisterContinue');
+              } else {
+                Alert.alert('Username already exists');
+              }
             }}}
           >
             <Text style={styles.buttonText}>Continue</Text>

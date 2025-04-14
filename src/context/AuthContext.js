@@ -2,11 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios'
 import FormData from 'form-data';
-import { BASE_URL} from '../config'
 
 export const AuthContext = createContext();
 
-let API_ADDRESS = "http://10.220.35.215:3000";
+const API_ADDRESS = "http://192.168.4.149:3000";
 
 const apiClient = axios.create({
     baseURL: API_ADDRESS,
@@ -16,7 +15,7 @@ const apiClient = axios.create({
 
 });
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [userToken, setUserToken] = useState(null);
 
@@ -24,6 +23,9 @@ export const AuthProvider = ({children}) => {
     const [newUsername, setNewUsername] = useState(null);
     const [newPassword, setNewPassword] = useState(null);
     const [newName, setNewName] = useState(null);
+    const [newProfilePic, setNewProfilePic] = useState(null);
+    const [newBio, setNewBio] = useState(null);
+    const [newInstagream, setNewInstagram] = useState(null);
 
 
     const requestOptions = {
@@ -32,27 +34,49 @@ export const AuthProvider = ({children}) => {
         redirect: "follow"
     };
 
+    // check for duplicate username
+    const checkUsername = async (username) => {
+        let isValid = true;
+        const data = {
+            username
+        };
+        try {
+            const res = await apiClient.post("/check-users", data);
+            const message = res.data.message;
+            if (message === 'User already exists!') {
+                isValid = false;
+            } 
+        } catch (err) {
+            console.error(err);
+        }
+        return isValid;
+    }
+
+    // create a user
     const handleRegister = async (personName, username, password) => {
         setIsLoading(true);
-
-        let data = {
-            personName: personName,
-            username: username,
-            password: password
+      
+        const data = {
+          personName,
+          username,
+          password
+        };
+      
+        try {
+          const res = await apiClient.post("/register", data);
+          setIsLoading(false);
+          return true;
+        } catch (err) {
+          console.log(err);
+          setIsLoading(false);
+          return false;
         }
-
-        await apiClient.post("/register", data).then((res) => {
-            console.log(res.data)
-            setIsLoading(false);
-        }).catch((err) => {
-            console.log(err);
-        });
-    }
+      };
+      
     
     const handleLogin = async (username, password) => {
-        console.log(`Username: ${username}`);
-        console.log(`Password: ${password}`)
-        
+        let response = '';
+
         setIsLoading(true);
         let data = {
             username: username, 
@@ -60,13 +84,18 @@ export const AuthProvider = ({children}) => {
         }
 
         await apiClient.post("/login", data).then((res) => {
-            console.log(res.data.token);
-            setUserToken(res.data.token);
-            AsyncStorage.setItem("userToken", res.data.token);
+            if (res.data.token) {
+                response = 'valid';
+                setUserToken(res.data.token);
+                AsyncStorage.setItem("userToken", res.data.token);
+            } else {
+                response = res.data.message;
+            }
             setIsLoading(false);
         }).catch((err) => {
             console.log(err);
         });
+        return response;
     }
 
     const logout = () => {
@@ -92,7 +121,19 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ handleLogin, handleRegister, logout, isLoading, userToken, newUsername, setNewUsername, newPassword, setNewPassword, newName, setNewName }}>
+        <AuthContext.Provider value={{ 
+            checkUsername, 
+            handleLogin, 
+            handleRegister, 
+            logout, 
+            isLoading, 
+            userToken, 
+            newUsername, 
+            setNewUsername, 
+            newPassword, 
+            setNewPassword, 
+            newName, 
+            setNewName }}>
             {children}
         </AuthContext.Provider>
     );

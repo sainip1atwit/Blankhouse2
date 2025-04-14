@@ -11,9 +11,11 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
+
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
+import { InteractionManager } from 'react-native';
 
 
 const RegisterContinue = ({ navigation }) => {
@@ -90,11 +92,10 @@ const RegisterContinue = ({ navigation }) => {
 
             <TouchableOpacity
               style={styles.completeButton}
-              onPress={() => {
+              onPress={async () => {
                 handleRegister(newName, newUsername, newPassword);
-                navigation.navigate('Opening')
-              }}
-            >
+                navigation.navigate('SuccessfulRegister');
+              }}>
               <Text style={styles.completeText}>Complete</Text>
             </TouchableOpacity>
           </View>

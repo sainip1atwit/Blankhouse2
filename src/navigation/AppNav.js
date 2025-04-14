@@ -1,28 +1,33 @@
-import { View, Text } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useContext } from 'react';
 
-import AppStack  from './AppStack';
+import AppStack from './AppStack';
 import AuthStack from './AuthStack';
 import { AuthContext } from '../context/AuthContext';
-import { ActivityIndicator } from 'react-native';
 
 function AppNav() {
   const { isLoading, userToken } = useContext(AuthContext);
+  const [showNav, setShowNav] = useState(false);
 
-  if (isLoading) {
+  useEffect(() => {
+    // Only show nav once isLoading is false AND userToken is resolved (either valid or null)
+    if (!isLoading) {
+      setShowNav(true);
+    }
+  }, [isLoading]);
+
+  if (!showNav) {
     return (
-        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-            <ActivityIndicator size={'large'}/>
-        </View>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
     );
   }
 
   return (
-    // check if userToken is valid
-    //if not valid, reauthenticate 
     <NavigationContainer>
-        {userToken !== null ? <AppStack/> : <AuthStack/>}
+      {userToken !== null ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 }

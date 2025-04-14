@@ -10,13 +10,14 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import { AuthContext } from '../../context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 
 const Login = ({ navigation }) => {
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { handleLogin } = useContext(AuthContext);
 
@@ -73,7 +74,14 @@ const Login = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={() => handleLogin(username, password)}
+            onPress={async () => {if (username && password) {
+              setUsername(username);
+              setPassword(password);
+              const response = await handleLogin(username, password);
+              if (response !== 'valid') {
+                Alert.alert(response);
+              }
+            }}}
           >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
