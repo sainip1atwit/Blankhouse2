@@ -94,13 +94,14 @@ app.post('/register', upload.none(), async (req, res) => {
   const name = req.body.personName;
   const username = req.body.username;
   const password = req.body.password;
-  let encryptPass = '';
+  const bio = req.body.bio;
+  const instagram = req.body.instagram;
 
   bcrypt.hash(password, saltRounds, async function(err, hash) {
     try {
       await pool.query(
-        'INSERT INTO \"Users\"("Name", "Username", "Password") VALUES ($1, $2, $3);',
-        [name, username, hash]
+        'INSERT INTO \"Users\"("Name", "Username", "Password", "Bio", "Instagram") VALUES ($1, $2, $3, $4, $5);',
+        [name, username, hash, bio, instagram]
       );
   
       res.json({ message: 'Account Created' });
@@ -112,9 +113,11 @@ app.post('/register', upload.none(), async (req, res) => {
 });
 
 
-app.post('/update', async (req, res) => {
-  const { username, bio, instagram } = req.body;
-  console.log(req.body);
+app.post('/update', upload.none(), async (req, res) => {
+  //add profile picture here too
+  const username = req.body.username;
+  const bio = req.body.bio;
+  const instagram = req.body.instagram;
 
   try {
     await pool.query(

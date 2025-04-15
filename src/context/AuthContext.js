@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     const [newName, setNewName] = useState(null);
     const [newProfilePic, setNewProfilePic] = useState(null);
     const [newBio, setNewBio] = useState(null);
-    const [newInstagream, setNewInstagram] = useState(null);
+    const [newInstagram, setNewInstagram] = useState(null);
 
 
     const requestOptions = {
@@ -53,13 +53,15 @@ export const AuthProvider = ({ children }) => {
     }
 
     // create a user
-    const handleRegister = async (personName, username, password) => {
+    const handleRegister = async (personName, username, password, bio, instagram) => {
         setIsLoading(true);
       
         const data = {
           personName,
           username,
-          password
+          password,
+          bio,
+          instagram
         };
       
         try {
@@ -133,7 +135,13 @@ export const AuthProvider = ({ children }) => {
             newPassword, 
             setNewPassword, 
             newName, 
-            setNewName }}>
+            setNewName,
+            newBio,
+            setNewBio,
+            newInstagram,
+            setNewInstagram, 
+            newProfilePic, 
+            setNewProfilePic}}>
             {children}
         </AuthContext.Provider>
     );

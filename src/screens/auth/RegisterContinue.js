@@ -15,7 +15,6 @@ import {
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
-import { InteractionManager } from 'react-native';
 
 
 const RegisterContinue = ({ navigation }) => {
@@ -23,7 +22,15 @@ const RegisterContinue = ({ navigation }) => {
   const [bio, setBio] = useState('');
   const [instagram, setInstagram] = useState('');
 
-  const { handleRegister, newUsername, newPassword, newName } = useContext(AuthContext);
+  const { 
+    handleRegister, 
+    newUsername, 
+    newPassword, 
+    newName, 
+    setNewBio,
+    setNewInstagram,
+    setNewProfilePic
+  } = useContext(AuthContext);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,6 +42,7 @@ const RegisterContinue = ({ navigation }) => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      setNewProfilePic(result.assets[0]);
     }
   };
 
@@ -93,7 +101,9 @@ const RegisterContinue = ({ navigation }) => {
             <TouchableOpacity
               style={styles.completeButton}
               onPress={async () => {
-                handleRegister(newName, newUsername, newPassword);
+                setNewBio(bio);
+                setNewInstagram(instagram);
+                handleRegister(newName, newUsername, newPassword, bio, instagram);
                 navigation.navigate('SuccessfulRegister');
               }}>
               <Text style={styles.completeText}>Complete</Text>
